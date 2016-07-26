@@ -1,11 +1,43 @@
+# language: android
+# android:
+#   components:
+#   - build-tools-24.0.0-rc3
+#   - android-23
+# env:
+#   matrix:
+#     - ANDROID_SDKS=android-19,sysimg-19  ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
+# before_install:
+#   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+#   - emulator -avd test -no-skin -no-audio -no-window &
+  
 language: android
+
 android:
   components:
-  - build-tools-24.0.0-rc3
-  - android-23
-env:
-  matrix:
-    - ANDROID_SDKS=android-19,sysimg-19  ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
+    - platform-tools
+    - tools
+    - android-23
+    - build-tools-23.0.3
+    - extra-android-m2repository
+
+# script:
+  # ./gradlew clean 
+
+jdk:
+  - oraclejdk8
+
+notifications:
+  email: false
+
+sudo: false
+
 before_install:
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
+- gem install fir-cli
+
+after_deploy:
+- fir p app/build/outputs/apk/app-release.apk -T $FIR_TOKEN -c "`git cat-file tag $TRAVIS_TAG`"
+# before_cache:
+  # - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+    - $HOME/.gradle
