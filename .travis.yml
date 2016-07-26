@@ -8,7 +8,7 @@
 #     - ANDROID_SDKS=android-19,sysimg-19  ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
 # before_install:
 #   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-#   - emulator -avd test -no-skin -no-audio -no-window &
+#   - emulator -avd est -no-skin -no-audio -no-window &
   
 language: android
 
@@ -19,9 +19,8 @@ android:
     - android-23
     - build-tools-23.0.3
     - extra-android-m2repository
-
-# script:
-  # ./gradlew clean 
+ script:
+  - "./gradlew assembleRelease"
 
 jdk:
   - oraclejdk8
